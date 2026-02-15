@@ -31,6 +31,16 @@ def stMean(x, axis=None):
     n = x.shape[axis] 
     return np.sum(x, axis=axis) / n
 
+def stSum (x, axis=None):
+    if x.size == 0:
+        raise ValueError("Empty array")
+    if axis is None:
+        total = 0.0
+        for val in x.flat:
+            total += val
+        return total
+    return np.sum(x, axis=axis)
+
 
 def stDisp (x, ddof = 0, axis = 0):
     mean = stMean(x, axis)
@@ -54,3 +64,26 @@ def stCovPirs(x, y):
     var_y = stDisp(y)
     cov = stCov(x,y)
     return cov / (np.sqrt(var_x) * np.sqrt(var_y))
+
+def stStd(x,ddof=0):
+    return np.sqrt(stDisp(x,ddof))
+
+def stMed(x, axis=None):
+    if axis is None:
+        sorted_x = sorted(x.flat)
+        n = len(sorted_x)
+        if n % 2 == 1:
+            return sorted_x[n//2]
+        else:
+            return (sorted_x[n//2 - 1]) + sorted_x[n//2] / 2
+
+    return np.median(x, axis=axis)
+
+def stQuantile(x, q):
+    sorted_x = sorted(x.flat)
+    n = len(sorted_x)
+    pos = q * (n - 1)
+    i = int(pos // 2)
+    f = pos - i
+    return sorted_x[i] + f * (sorted_x[i+1] - sorted_x[i])
+print(stQuantile(np.array([1,3,5,7]), 0.5))  # 4.0
