@@ -56,3 +56,13 @@ def stQuantile(x, q):
     f = pos - i
     
     return sorted_x[i] + f * (sorted_x[i+1] - sorted_x[i])
+
+def stRange(x, axis=None):
+    max_e, min_e = x.flat[0], x.flat[0]  
+    for val in x.flat:                    
+        if val > max_e: max_e = val       
+        if val < min_e: min_e = val
+
+    return max_e - min_e
+
+
